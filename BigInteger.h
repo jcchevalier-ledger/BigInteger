@@ -18,11 +18,14 @@ public:
 
     explicit BigInteger(const vector<unsigned long int> &);
 
+    vector<unsigned long int> getNumber() const;
+
+    int getSize() const;
+
     void printNumber();
 
 private:
     vector<unsigned long int> number;
-
 };
 
 

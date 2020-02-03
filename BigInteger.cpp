@@ -8,7 +8,6 @@
 BigInteger::BigInteger(const vector<unsigned long int> &number) {
     this->number = number;
     cout << "New assigned number: ";
-    printNumber();
 }
 
 BigInteger::BigInteger() = default;
@@ -18,4 +17,12 @@ void BigInteger::printNumber() {
         std::cout << i << ' ';
     }
     std::cout << "\n";
+}
+
+vector<unsigned long int> BigInteger::getNumber() const {
+    return number;
+}
+
+int BigInteger::getSize() const {
+    return number.size();
 }
