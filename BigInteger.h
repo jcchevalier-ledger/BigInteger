@@ -24,12 +24,20 @@ public:
 
     void printNumber();
 
-    BigInteger operator+(const BigInteger &bigInteger);
+    BigInteger operator+(const BigInteger &bigInteger) const;
 
     BigInteger operator-(const BigInteger &bigInteger) const;
 
+    bool operator>(const BigInteger &bigInteger) const;
+
+    bool operator<(const BigInteger &bigInteger) const;
+
+    void writeFile() const;
+
 private:
     vector<unsigned long int> number;
+
+    BigInteger modularAddition(const BigInteger &number_b, const BigInteger &modulo);
 };
 
 
