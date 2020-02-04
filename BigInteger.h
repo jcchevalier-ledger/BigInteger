@@ -20,9 +20,13 @@ public:
 
     vector<unsigned long int> getNumber() const;
 
-    int getSize() const;
+    int size() const;
 
     void printNumber();
+
+    BigInteger operator+(const BigInteger &bigInteger);
+
+    BigInteger operator-(const BigInteger &bigInteger) const;
 
 private:
     vector<unsigned long int> number;
