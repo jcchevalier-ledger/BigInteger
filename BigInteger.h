@@ -18,15 +18,21 @@ public:
 
     BigInteger(const BigInteger &integer);
 
+    BigInteger(const int &size);
+
     explicit BigInteger(const vector<unsigned long int> &);
 
     BigInteger operator+(const BigInteger &bigInteger) const;
 
     BigInteger operator-(const BigInteger &bigInteger) const;
 
+    BigInteger operator*(const BigInteger &bigInteger) const;
+
     bool operator>(const BigInteger &bigInteger) const;
 
     bool operator<(const BigInteger &bigInteger) const;
+
+    bool operator==(const BigInteger &bigInteger) const;
 
     vector<unsigned long int> getNumber() const;
 
@@ -39,6 +45,8 @@ public:
     BigInteger modularAddition(const BigInteger &number_b, const BigInteger &modulo) const;
 
     BigInteger modularSubstraction(const BigInteger &number_b, const BigInteger &modulo) const;
+
+    BigInteger modularMultiplication(const BigInteger &number_b, const BigInteger &modulo) const;
 
 private:
     vector<unsigned long int> number;

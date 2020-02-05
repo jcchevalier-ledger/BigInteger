@@ -5,7 +5,7 @@ def bitfield(n):
     return bit_array
 
 
-if __name__ == "__main__":
+def test():
     f = open("data.txt", "r")
     results = []
     for element in f:
@@ -18,8 +18,10 @@ if __name__ == "__main__":
         results.append(converted_number)
     print("a                      =", results[0])
     print("b                      =", results[1])
-    print("modulo                 =", results[2])
-    print("a - b                  =", results[0] - results[1])
-    print("result                 =", results[3])
-    print("modular addition       =", (results[0] + results[2]) - results[1])
-    print("modular substraction   =", (results[0] - results[1]) % results[2])
+    print("a * b                  =", results[2])
+    print("Expected result        =", results[0] * results[1])
+    return 0
+
+
+if __name__ == "__main__":
+    test()
