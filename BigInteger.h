@@ -16,13 +16,9 @@ class BigInteger {
 public:
     BigInteger();
 
+    BigInteger(const BigInteger &integer);
+
     explicit BigInteger(const vector<unsigned long int> &);
-
-    vector<unsigned long int> getNumber() const;
-
-    int size() const;
-
-    void printNumber();
 
     BigInteger operator+(const BigInteger &bigInteger) const;
 
@@ -32,12 +28,20 @@ public:
 
     bool operator<(const BigInteger &bigInteger) const;
 
+    vector<unsigned long int> getNumber() const;
+
+    int size() const;
+
+    void printNumber();
+
     void writeFile() const;
+
+    BigInteger modularAddition(const BigInteger &number_b, const BigInteger &modulo) const;
+
+    BigInteger modularSubstraction(const BigInteger &number_b, const BigInteger &modulo) const;
 
 private:
     vector<unsigned long int> number;
-
-    BigInteger modularAddition(const BigInteger &number_b, const BigInteger &modulo);
 };
 
 

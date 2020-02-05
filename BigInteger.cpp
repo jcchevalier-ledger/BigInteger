@@ -6,11 +6,15 @@
 #include <iostream>
 #include <fstream>
 
+BigInteger::BigInteger() = default;
+
 BigInteger::BigInteger(const vector<unsigned long int> &number) {
     this->number = number;
 }
 
-BigInteger::BigInteger() = default;
+BigInteger::BigInteger(const BigInteger &bigInteger) {
+    this->number = bigInteger.getNumber();
+}
 
 vector<unsigned long int> BigInteger::getNumber() const {
     return number;
@@ -20,13 +24,27 @@ int BigInteger::size() const {
     return number.size();
 }
 
-BigInteger BigInteger::modularAddition(const BigInteger &number_b, const BigInteger &modulo) {
+BigInteger BigInteger::modularAddition(const BigInteger &number_b, const BigInteger &modulo) const {
 
-    BigInteger output = *this + number_b;
+    BigInteger output = *this;
+    output = output + number_b;
 
-    if (*this > modulo) {
+    if (output > modulo) {
         output = output - modulo;
     }
+    return output;
+}
+
+BigInteger BigInteger::modularSubstraction(const BigInteger &number_b, const BigInteger &modulo) const {
+
+    BigInteger output = *this;
+
+    if (output < number_b) {
+        output = output + modulo;
+    }
+
+    output = output - number_b;
+
     return output;
 }
 
