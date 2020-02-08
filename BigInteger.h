@@ -5,7 +5,6 @@
 #ifndef MODULAR_OPERATIONS_BIGINTEGER_H
 #define MODULAR_OPERATIONS_BIGINTEGER_H
 
-
 #include <string>
 #include <vector>
 
@@ -28,6 +27,8 @@ public:
 
     BigInteger operator*(const BigInteger &bigInteger) const;
 
+    BigInteger operator>>(const int &k) const;
+
     bool operator>(const BigInteger &bigInteger) const;
 
     bool operator<(const BigInteger &bigInteger) const;
@@ -46,11 +47,15 @@ public:
 
     BigInteger modularSubstraction(const BigInteger &number_b, const BigInteger &modulo) const;
 
-    BigInteger modularMultiplication(const BigInteger &number_b, const BigInteger &modulo) const;
+    BigInteger modularMultiplication(const BigInteger &number_b, const BigInteger &modulo, const BigInteger &v,
+                                     const BigInteger &r) const;
+
+    BigInteger modulo_2_pow(int power) const;
+
+    int getPow() const;
 
 private:
     vector<unsigned long int> number;
 };
-
 
 #endif //MODULAR_OPERATIONS_BIGINTEGER_H

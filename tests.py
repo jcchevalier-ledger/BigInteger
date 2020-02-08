@@ -16,11 +16,32 @@ def test():
             number += bitfield(int(array[i]))
         converted_number = int("".join(str(x) for x in number), 2)
         results.append(converted_number)
-    print("a                      =", results[0])
-    print("b                      =", results[1])
-    print("a * b                  =", results[2])
-    print("Expected result        =", results[0] * results[1])
-    return 0
+    a = results[0]
+    b = results[1]
+    r = results[2]
+    v = results[3]
+    n = results[4]
+    result = results[5]
+
+    s = a * r * r
+    t = (s * v) % r
+    m = s + t * n
+    u = m / r
+    if u >= n:
+        u = u - n
+    print(int(u))
+
+    s = int(u) * 1
+    t = (s * v) % r
+    m = s + t * n
+    u = m / r
+    if u >= n:
+        u = u - n
+    print(int(u))
+
+    print(result)
+    f.close()
+    return
 
 
 if __name__ == "__main__":

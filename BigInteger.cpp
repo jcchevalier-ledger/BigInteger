@@ -31,11 +31,13 @@ int BigInteger::size() const {
 
 BigInteger BigInteger::modularAddition(const BigInteger &number_b, const BigInteger &modulo) const {
 
-    BigInteger output = *this;
-    output = output + number_b;
+    BigInteger this_copy = *this + number_b;
+    BigInteger output;
 
-    if (output > modulo) {
-        output = output - modulo;
+    if (this_copy > modulo) {
+        output = this_copy - modulo;
+    } else {
+        output = this_copy;
     }
     return output;
 }
@@ -157,6 +159,38 @@ BigInteger BigInteger::operator*(const BigInteger &bigInteger) const {
     return output;
 }
 
+BigInteger BigInteger::operator>>(const int &k) const {
+
+    vector<unsigned long int> this_copy = this->getNumber();
+    unsigned long int rest = 0;
+    unsigned long int value_to_add = 0;
+    unsigned long int insert_value = 0;
+    vector<unsigned long int> output;
+
+    int suppressed_bytes = k / 32;
+    int suppressed_bits = k % 32;
+
+    for (int i = 0; i < suppressed_bytes; i++) {
+        this_copy.pop_back();
+    }
+
+    rest = (this_copy[0] >> suppressed_bits);
+    insert_value = (value_to_add + rest);
+    output.insert(output.begin(), insert_value);
+
+    for (int i = 1; i < this_copy.size(); i++) {
+        value_to_add = this_copy[i - 1] << (32 - suppressed_bits) & 0xFFFFFFFF;
+        rest = (this_copy[i] >> suppressed_bits);
+        insert_value = (value_to_add + rest);
+        output.insert(output.end(), insert_value);
+    }
+
+    if (output[0] == 0) {
+        output.erase(output.begin());
+    }
+    return (BigInteger(output));
+}
+
 bool BigInteger::operator>(const BigInteger &bigInteger) const {
     vector<unsigned long int> vector_b = bigInteger.getNumber();
     for (int i = 0; i < this->size(); i++) {
@@ -199,10 +233,7 @@ void BigInteger::writeFile() const {
 
     if (flux) {
         for (auto &i : this->number) {
-            flux << i;
-            if (i != this->number.at(this->number.size() - 1)) {
-                flux << " ";
-            }
+            flux << i << " ";
         }
         flux << "\n";
     } else {
@@ -222,20 +253,66 @@ void BigInteger::printNumber() {
     std::cout << "\n";
 }
 
-BigInteger BigInteger::modularMultiplication(const BigInteger &number_b, const BigInteger &modulo) const {
+int BigInteger::getPow() const {
 
-    BigInteger output = BigInteger(*this);
+    BigInteger r_copy = *this;
+    unsigned int byte = r_copy.size() - 1;
+    unsigned int bit = 0;
+    unsigned long int intermediate_value = r_copy.getNumber()[0];
 
-    //TODO: Calculate s = A*B
-
-    //TODO: Calculate t = (s*v) mod r
-
-    //TODO: Calculate m = (s + t) * m
-
-    //TODO: Calculate u = m/r
-
-    if (output > modulo || output == modulo) {
-        output = output - modulo;
+    while (intermediate_value != 1) {
+        intermediate_value = intermediate_value >> 1;
+        bit += 1;
     }
-    return output;
+
+    return ((byte * 32) + bit);
+}
+
+BigInteger BigInteger::modulo_2_pow(int power) const {
+    int byte = power / 32;
+    int bit = power % 32;
+    vector<unsigned long int> modulo_array;
+    vector<unsigned long int> output;
+
+    for (int i = this->size() - 1; i > this->size() - 1 - byte; i--) {
+        output.insert(output.begin(), number.at(i));
+    }
+
+    unsigned long int surplus = (number.at(this->size() - 1 - byte) >> (bit)) << (bit);
+    output.insert(output.begin(), number.at(this->size() - 1 - byte) - surplus);
+    return BigInteger(output);
+}
+
+BigInteger BigInteger::modularMultiplication(const BigInteger &number_b, const BigInteger &modulo, const BigInteger &v,
+                                             const BigInteger &r) const {
+
+    BigInteger this_copy = *this;
+    BigInteger s = BigInteger();
+    BigInteger t = BigInteger();
+    BigInteger m = BigInteger();
+    BigInteger u;
+
+    int k = modulo.getPow();
+
+    //Compute s = A * B
+
+    s = this_copy * number_b;
+
+    //Compute t = (s * v) mod r
+
+    t = (s * v).modulo_2_pow(k);
+
+    //Compute m = s + t * n
+
+    m = s + t * modulo;
+
+    //Compute u = m/r
+
+    u = m >> k;
+
+    while (u > modulo || u == modulo) {
+        u = u - modulo;
+    }
+
+    return u;
 }
